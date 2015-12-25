@@ -7,12 +7,13 @@ mod.directive 'infiniteScroll', ['$rootScope', '$window', '$interval', 'THROTTLE
   scope:
     infiniteScroll: '&'
     infiniteScrollContainer: '='
+    infiniteScrollInsideElement: '@'
     infiniteScrollDistance: '='
     infiniteScrollDisabled: '='
     infiniteScrollUseDocumentBottom: '=',
     infiniteScrollListenForEvent: '@'
 
-  link: (scope, elem, attrs) ->
+  link: (scope, element, attrs) ->
     windowElement = angular.element($window)
 
     scrollDistance = null
@@ -22,6 +23,10 @@ mod.directive 'infiniteScroll', ['$rootScope', '$window', '$interval', 'THROTTLE
     immediateCheck = true
     useDocumentBottom = false
     unregisterEventListener = null
+    if scope.infiniteScrollInsideElement
+        elem = angular.element element.querySelector scope.infiniteScrollInsideElement
+    else
+        elem = element
 
     height = (elem) ->
       elem = elem[0] or elem
